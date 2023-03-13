@@ -5,32 +5,35 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class AppPanel  extends JPanel implements ActionListener
+/**
+ * Author: David Song
+ * Date: 03/11/2023
+ *
+ * Description: set up the whole window that is seen when the program is run.
+ */
+
+public class AppPanel extends JPanel implements ActionListener
 {
     private Model model;
-    private ControlPanel controls;
+    public ControlPanel controls;
     private View view;
-    private boolean saved;
-    private String fName;
+    //private boolean saved;
+    //private String fName;
+    private AppFactory factory;
 
-    public AppPanel() {
+    public AppPanel(AppFactory fac) {
         model = new Model();
         view = new View(model);
         controls = new ControlPanel();
-        fName = "";
-        saved = false;
+        //fName = "";
+        //saved = false;
         this.setLayout((new GridLayout(1, 2)));
         this.add(controls);
         this.add(view);
+        factory = fac;
         //his.add(new JButton("foo"));
 
-        SafeFrame frame = new SafeFrame();
-        Container cp = frame.getContentPane();
-        cp.add(this);
-        frame.setJMenuBar(this.createMenuBar());
-        frame.setTitle("model Graphics");
-        frame.setSize(500, 300);
-        frame.setVisible(true);
+
     }
 
     protected JMenuBar createMenuBar() {
@@ -50,14 +53,28 @@ public class AppPanel  extends JPanel implements ActionListener
         //blank :)
     }
 
-    class ControlPanel extends JPanel {
-        public ControlPanel() {
-            setLayout(new GridLayout(4, 2));
+    public void display()
+    {
+        SafeFrame frame = new SafeFrame();
+        Container cp = frame.getContentPane();
+        cp.add(this);
+        frame.setJMenuBar(this.createMenuBar());
+        frame.setTitle("model Graphics");
+        frame.setSize(500, 300);
+        frame.setVisible(true);
+    }
+
+    public class ControlPanel extends JPanel {
+
+        public JPanel controlPanel;
+        public ControlPanel()
+        {
+            //setLayout(new GridLayout(4, 2));
 
             setBackground(Color.PINK);
-            JPanel p = new JPanel();
+            controlPanel = new JPanel();
 
-
+            /*
             JButton northwest = new JButton("NW");
             Font newButtonFont=new Font("Times New Roman",northwest.getFont().getStyle(),20);
             Dimension d = new Dimension(100, 25);
@@ -115,10 +132,24 @@ public class AppPanel  extends JPanel implements ActionListener
             southeast.addActionListener(AppPanel.this);
             p.add(southeast);
             add(p);
+
+             */
+        }
+
+        public void add(JButton jb)
+        {
+            Font newButtonFont=new Font("Times New Roman",jb.getFont().getStyle(),20);
+            Dimension d = new Dimension(100, 25);
+            jb.setFont(newButtonFont);
+            jb.setPreferredSize(d);
+            controlPanel.add(jb);
+            add(controlPanel);
         }
     }
 
+    /*
     public static void main(String[] args) {
         AppPanel app = new AppPanel();
     }
+     */
 }
