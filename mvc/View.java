@@ -4,9 +4,6 @@ import javax.swing.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-/* 3/11/2023: Nathan Duong
- */
-
 public class View extends JPanel implements PropertyChangeListener {
 
     private Model model;
@@ -26,7 +23,7 @@ public class View extends JPanel implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-
+        repaint();
     }
 
 
