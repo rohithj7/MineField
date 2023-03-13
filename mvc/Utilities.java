@@ -1,9 +1,9 @@
 package mvc;
 
-import java.awt.event.*;
+import javax.swing.*;
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.Random;
-import javax.swing.*;
 
 public class Utilities {
 
