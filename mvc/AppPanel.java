@@ -15,7 +15,6 @@ public class AppPanel extends JPanel implements ActionListener
     private AppFactory appFactory;
     protected controlPanel controlPanel;
     private View view;
-    private boolean saved;
     private String fName;
     private Model model;
 
@@ -90,7 +89,7 @@ public class AppPanel extends JPanel implements ActionListener
                     if (Utilities.confirm("Are you sure? Unsaved changes will be lost!")) {
                         String fName = Utilities.getFileName((String) null, false);
                         ObjectInputStream is = new ObjectInputStream(new FileInputStream(fName));
-                        fName = fName;
+                        this.fName = fName;
                         model = (Model) is.readObject();
                         model.initSupport();
                         view.setModel(model);
