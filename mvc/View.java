@@ -4,9 +4,17 @@ import javax.swing.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+/**
+ * Nathan Duong
+ * 3/14/2023
+ * Removed initSupport() from setModel(), moved to AppPanel
+ *
+ *
+ */
+
 public class View extends JPanel implements PropertyChangeListener {
 
-    private Model model;
+    protected Model model;
 
     public View(Model m) {
         model = m;
@@ -17,7 +25,6 @@ public class View extends JPanel implements PropertyChangeListener {
         model.removePropertyChangeListener(this);
         model = newModel;
         model.addPropertyChangeListener(this);
-        model.initSupport();
         repaint();
     }
 

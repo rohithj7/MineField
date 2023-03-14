@@ -4,35 +4,60 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 /**
  * Author: David Song
  * Date: 03/11/2023
  *
  * Description: set up the whole window that is seen when the program is run.
+ *
+ * Nathan Duong
+ * 3/14/2023
+ * Updated to accommodate for specific edit commands from AppFactory, Removed old turtle graphics cases
+ *
+ *
  */
 
 public class AppPanel extends JPanel implements ActionListener
+
 {
-    private Model model;
-    public ControlPanel controls;
+    private AppFactory appFactory;
+    protected controlPanel controlPanel;
     private View view;
-    //private boolean saved;
-    //private String fName;
-    private AppFactory factory;
+    private String fName;
+    private Model model;
 
-    public AppPanel(AppFactory fac) {
-        model = new Model();
-        view = new View(model);
-        controls = new ControlPanel();
-        //fName = "";
-        //saved = false;
+    public AppPanel(AppFactory appFactory) {
+        this.appFactory = appFactory;
+        model = appFactory.makeModel();
+        view = appFactory.makeView(model);
+        controlPanel = new controlPanel();
         this.setLayout((new GridLayout(1, 2)));
-        this.add(controls);
+        this.add(controlPanel);
+        controlPanel.setPreferredSize(new Dimension(500, 500));
         this.add(view);
-        factory = fac;
-        //his.add(new JButton("foo"));
+        view.setPreferredSize(new Dimension(500,500));
+    }
 
+    public void display() {
+        SafeFrame frame = new SafeFrame();
+        Container cp = frame.getContentPane();
+        cp.add(this);
+        frame.setJMenuBar(this.createMenuBar());
+        frame.setTitle(appFactory.getTitle());
+        frame.setSize(1000, 500);
+        frame.setVisible(true);
+    }
+
+    protected class controlPanel extends JPanel {
+
+        public controlPanel() {
+            setBackground(Color.PINK);
+        }
 
     }
 
@@ -40,9 +65,9 @@ public class AppPanel extends JPanel implements ActionListener
         JMenuBar result = new JMenuBar();
         JMenu fileMenu = Utilities.makeMenu("File", new String[]{"New", "Save", "Save As", "Open", "Quit"}, this);
         result.add(fileMenu);
-        JMenu editMenu = Utilities.makeMenu("Edit", new String[]{"North", "East", "South", "West", "Clear", "Pen", "Color", "steps"}, this);
+        JMenu editMenu = Utilities.makeMenu("Edit", appFactory.getEditCommands(), this);
         result.add(editMenu);
-        JMenu helpMenu = Utilities.makeMenu("Help", new String[]{"About", "Help"}, this);
+        JMenu helpMenu = Utilities.makeMenu("Help", new String[]{"Help", "About"}, this);
         result.add(helpMenu);
         return result;
     }
@@ -50,103 +75,81 @@ public class AppPanel extends JPanel implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        //blank :)
-    }
+        String cmmd = e.getActionCommand();
 
-    public void display()
-    {
-        SafeFrame frame = new SafeFrame();
-        Container cp = frame.getContentPane();
-        cp.add(this);
-        frame.setJMenuBar(this.createMenuBar());
-        frame.setTitle("model Graphics");
-        frame.setSize(500, 300);
-        frame.setVisible(true);
-    }
+        try {
+            switch (cmmd) {
 
-    public class ControlPanel extends JPanel {
+                case "Save": {
+                    if (fName == null) {
+                        fName = Utilities.getFileName((String) null, false);
+                    }
+                    ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(fName));
+                    os.writeObject(this.model);
+                    os.close();
+                    break;
+                }
 
-        public JPanel controlPanel;
-        public ControlPanel()
-        {
-            //setLayout(new GridLayout(4, 2));
+                case "Save As": {
+                    String fName = Utilities.getFileName((String) null, false);
+                    ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(fName));
+                    os.writeObject(this.model);
+                    os.close();
+                    break;
+                }
 
-            setBackground(Color.PINK);
-            controlPanel = new JPanel();
+                case "Open": {
+                    if (Utilities.confirm("Are you sure? Unsaved changes will be lost!")) {
+                        String fName = Utilities.getFileName((String) null, false);
+                        ObjectInputStream is = new ObjectInputStream(new FileInputStream(fName));
+                        this.fName = fName;
+                        model = (Model) is.readObject();
+                        model.initSupport();
+                        view.setModel(model);
+                        is.close();
+                    }
 
-            /*
-            JButton northwest = new JButton("NW");
-            Font newButtonFont=new Font("Times New Roman",northwest.getFont().getStyle(),20);
-            Dimension d = new Dimension(100, 25);
-            northwest.setFont(newButtonFont);
-            northwest.setPreferredSize(d);
-            northwest.addActionListener(AppPanel.this);
-            p.add(northwest);
-            add(p);
+                    break;
 
-            JButton north = new JButton("N");
-            north.setFont(newButtonFont);
-            north.setPreferredSize(d);
-            north.addActionListener(AppPanel.this);
-            p.add(north);
-            add(p);
+                }
 
-            JButton northeast = new JButton("NE");
-            northeast.setFont(newButtonFont);
-            northeast.setPreferredSize(d);
-            northeast.addActionListener(AppPanel.this);
-            p.add(northeast);
-            add(p);
+                case "New": {
+                    if (Utilities.confirm("Are you sure? Unsaved changes will be lost!")) {
+                        fName = null;
+                        model = appFactory.makeModel();
+                        view.setModel(model);
+                    }
+                    break;
+                }
 
-            JButton west = new JButton("W");
-            west.setFont(newButtonFont);
-            west.setPreferredSize(d);
-            west.addActionListener(AppPanel.this);
-            p.add(west);
-            add(p);
+                case "Quit": {
+                    if (Utilities.confirm("Are you sure? Unsaved changes will be lost!"))
+                        System.exit(0);
+                    break;
+                }
 
-            JButton east = new JButton("E");
-            east.setFont(newButtonFont);
-            east.setPreferredSize(d);
-            east.addActionListener(AppPanel.this);
-            p.add(east);
-            add(p);
+                case "About": {
+                    Utilities.inform(appFactory.about());
+                    break;
+                }
 
-            JButton southwest = new JButton("SW");
-            southwest.setFont(newButtonFont);
-            southwest.setPreferredSize(d);
-            southwest.addActionListener(AppPanel.this);
-            p.add(southwest);
-            add(p);
+                case "Help": {
+                    String[] cmmds = appFactory.getHelp();
+                    Utilities.inform(cmmds);
+                    break;
 
-            JButton south = new JButton("S");
-            south.setFont(newButtonFont);
-            south.setPreferredSize(d);
-            south.addActionListener(AppPanel.this);
-            p.add(south);
-            add(p);
+                }
 
-            JButton southeast = new JButton("SE");
-            southeast.setFont(newButtonFont);
-            southeast.setPreferredSize(d);
-            southeast.addActionListener(AppPanel.this);
-            p.add(southeast);
-            add(p);
+                default: {
+                    Command cmmdEditCommand = appFactory.makeEditCommand(model, cmmd, null);
+                    cmmdEditCommand.execute();
+                }
+            }
 
-             */
-        }
-
-        public void add(JButton jb)
-        {
-            Font newButtonFont=new Font("Times New Roman",jb.getFont().getStyle(),20);
-            Dimension d = new Dimension(100, 25);
-            jb.setFont(newButtonFont);
-            jb.setPreferredSize(d);
-            controlPanel.add(jb);
-            add(controlPanel);
+        } catch (Exception ex) {
+            Utilities.error(ex);
         }
     }
-    public static void main(String[] args) {
-        AppPanel app = new AppPanel();
-    }
+
 }
+
