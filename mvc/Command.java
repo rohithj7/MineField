@@ -8,4 +8,5 @@ public class Command {
         this.model = model;
     }
 
+    public void execute() {}
 }
