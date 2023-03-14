@@ -13,7 +13,7 @@ public class AppPanel extends JPanel implements ActionListener
 
 {
     private AppFactory appFactory;
-    protected controlPanel controls;
+    protected controlPanel controlPanel;
     private View view;
     private boolean saved;
     private String fName;
@@ -23,10 +23,10 @@ public class AppPanel extends JPanel implements ActionListener
         this.appFactory = appFactory;
         model = appFactory.makeModel();
         view = appFactory.makeView(model);
-        controls = new controlPanel();
+        controlPanel = new controlPanel();
         this.setLayout((new GridLayout(1, 2)));
-        this.add(controls);
-        controls.setPreferredSize(new Dimension(500, 500));
+        this.add(controlPanel);
+        controlPanel.setPreferredSize(new Dimension(500, 500));
         this.add(view);
         view.setPreferredSize(new Dimension(500,500));
     }
@@ -130,7 +130,6 @@ public class AppPanel extends JPanel implements ActionListener
 
                 default: {
                     Command cmmdEditCommand = appFactory.makeEditCommand(model, cmmd, null);
-                    System.out.println(cmmdEditCommand);
                     cmmdEditCommand.execute();
                 }
             }
