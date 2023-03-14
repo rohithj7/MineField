@@ -1,9 +1,9 @@
 package mvc;
 
-import javax.swing.*;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.*;
 import java.util.Random;
+import javax.swing.*;
 
 public class Utilities {
 
@@ -133,5 +133,4 @@ public class Utilities {
     public static int getID() {
         return nextID++;
     }
-
 }

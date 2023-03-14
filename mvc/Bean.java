@@ -1,7 +1,7 @@
 package mvc;
 
 import java.beans.*;
-import java.io.Serializable;
+import java.io.*;
 
 abstract public class Bean implements Serializable {
 
@@ -55,4 +55,3 @@ abstract public class Bean implements Serializable {
     }
 
 }
-

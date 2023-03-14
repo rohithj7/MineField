@@ -9,6 +9,19 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+/**
+ * Author: David Song
+ * Date: 03/11/2023
+ *
+ * Description: set up the whole window that is seen when the program is run.
+ *
+ * Nathan Duong
+ * 3/14/2023
+ * Updated to accommodate for specific edit commands from AppFactory, Removed old turtle graphics cases
+ *
+ *
+ */
+
 public class AppPanel extends JPanel implements ActionListener
 
 {
@@ -139,3 +152,4 @@ public class AppPanel extends JPanel implements ActionListener
     }
 
 }
+
