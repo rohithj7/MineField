@@ -96,6 +96,7 @@ public class MineFieldView extends View {
                 add(current);
             }
         }
+        revalidate();
     }
 
 }
