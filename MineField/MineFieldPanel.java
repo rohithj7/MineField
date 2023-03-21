@@ -1,34 +1,24 @@
-package mineField;
-
-import mvc.AppFactory;
-import mvc.AppPanel;
-
-import javax.swing.*;
+package MineField;
 import java.awt.*;
-import java.awt.event.ActionEvent;
+import javax.swing.*;
+import mvc.*;
 import java.beans.PropertyChangeEvent;
+import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeListener;
-
-/*
-    3/20/23: Nathan Duong
-        Properly formatted all direction buttons into controlPanel.
- */
-
-public class MineFieldPanel extends AppPanel implements PropertyChangeListener {
-    private final JButton nw;
-    private final JButton n;
-    private final JButton ne;
-    private final JButton w;
-    private final JButton e;
-    private final JButton sw;
-    private final JButton s;
-    private final JButton se;
-
-    public MineFieldPanel(AppFactory factory) {
+public class MineFieldPanel extends AppPanel implements PropertyChangeListener{
+    private JButton nw;
+    private JButton n;
+    private JButton ne;
+    private JButton w;
+    private JButton e;
+    private JButton sw;
+    private JButton s;
+    private JButton se;
+    public MineFieldPanel(AppFactory factory){
         super(factory);
-        MineField field = (MineField) model;
+        MineField field = (MineField)model;
         field.addPropertyChangeListener(this);
-        controlPanel.setLayout(new GridLayout(4, 2));
+        controlPanel.setLayout(new GridLayout(20,20));
         JPanel nowe = new JPanel();
         nw = new JButton("NW");
         nw.addActionListener(this);
@@ -37,50 +27,43 @@ public class MineFieldPanel extends AppPanel implements PropertyChangeListener {
         JPanel no = new JPanel();
         n = new JButton("N");
         n.addActionListener(this);
-        no.add(n);
-        controlPanel.add(no);
+        nowe.add(no);
+        controlPanel.add(n);
         JPanel noea = new JPanel();
         ne = new JButton("NE");
         ne.addActionListener(this);
-        noea.add(ne);
-        controlPanel.add(noea);
+        nowe.add(noea);
+        controlPanel.add(ne);
         JPanel we = new JPanel();
         w = new JButton("W");
         w.addActionListener(this);
-        we.add(w);
-        controlPanel.add(we);
+        nowe.add(we);
+        controlPanel.add(w);
         JPanel ea = new JPanel();
         e = new JButton("E");
         e.addActionListener(this);
-        ea.add(e);
-        controlPanel.add(ea);
+        nowe.add(ea);
+        controlPanel.add(e);
         JPanel sowe = new JPanel();
         sw = new JButton("SW");
         sw.addActionListener(this);
-        sowe.add(sw);
-        controlPanel.add(sowe);
+        nowe.add(sowe);
+        controlPanel.add(sw);
         JPanel so = new JPanel();
         s = new JButton("S");
         s.addActionListener(this);
-        so.add(s);
-        controlPanel.add(so);
+        nowe.add(so);
+        controlPanel.add(s);
         JPanel soea = new JPanel();
         se = new JButton("SE");
         se.addActionListener(this);
-        soea.add(se);
-        controlPanel.add(soea);
+        nowe.add(soea);
+        controlPanel.add(se);
     }
-
-    public static void main(String[] args) {
-        AppFactory factory = new MineFieldFactory();
-        AppPanel panel = new MineFieldPanel(factory);
-        panel.display();
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        MineField field = (MineField) model;
+        MineField field = (MineField)model;
         if (e.getSource() == nw) {
             field.setDirection(MineField.Direction.NW);
         }
@@ -106,13 +89,17 @@ public class MineFieldPanel extends AppPanel implements PropertyChangeListener {
             field.setDirection(MineField.Direction.SE);
         }
     }
-
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         super.propertyChange(evt);
         if (evt.getPropertyName().equals("mineField")) {
             controlPanel.repaint();
         }
+    }
+    public static void main(String[] args) {
+        AppFactory factory = new MineFieldFactory();
+        AppPanel panel = new MineFieldPanel(factory);
+        panel.display();
     }
 
 
