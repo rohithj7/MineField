@@ -1,31 +1,34 @@
 package mvc;
 
 public class Model extends Bean {
-
+    private static final long serialVersionUID = 1L;
     private boolean unsavedChanges;
-    String fileName;
+    private String fileName;
 
-    public Model() {}
-
-    public void changed(){
-        unsavedChanges = true;
-        firePropertyChange(null,null,null);
+    public Model() {
+        unsavedChanges = false;
+        fileName = null;
     }
 
-    public String getFileName() {
-        return fileName;
+    public void changed() {
+        unsavedChanges = true;
+        firePropertyChange(null, null, null);
     }
 
     public void setFileName(String fName) {
         fileName = fName;
     }
 
-    public boolean getUnsavedChanges() {
-        return unsavedChanges;
+    public void setUnsavedChanges(boolean unsavedChanges) {
+        this.unsavedChanges = unsavedChanges;
     }
 
-    public void setUnsavedChanges(boolean b) {
-        unsavedChanges = b;
+    public String getFileName() {
+        return fileName;
+    }
+
+    public boolean getUnsavedChanges() {
+        return unsavedChanges;
     }
 
 }

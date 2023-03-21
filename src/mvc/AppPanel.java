@@ -9,26 +9,34 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-public class AppPanel extends JPanel implements ActionListener
+/**
+ * Author: David Song
+ * Date: 03/11/2023
+ * <p>
+ * Description: set up the whole window that is seen when the program is run.
+ * <p>
+ * Nathan Duong
+ * 3/14/2023
+ * Updated to accommodate for specific edit commands from AppFactory, Removed old turtle graphics cases
+ */
 
-{
-    private AppFactory appFactory;
-    protected controlPanel controls;
-    private View view;
-    private boolean saved;
+public class AppPanel extends JPanel implements ActionListener {
+    private final AppFactory appFactory;
+    private final View view;
+    protected controlPanel controlPanel;
     private String fName;
     private Model model;
 
     public AppPanel(AppFactory appFactory) {
         this.appFactory = appFactory;
-        Model m = appFactory.makeModel();
-        view = appFactory.makeView(m);
-        controls = new controlPanel();
+        model = appFactory.makeModel();
+        view = appFactory.makeView(model);
+        controlPanel = new controlPanel();
         this.setLayout((new GridLayout(1, 2)));
-        this.add(controls);
-        controls.setPreferredSize(new Dimension(500, 500));
+        this.add(controlPanel);
+        controlPanel.setPreferredSize(new Dimension(500, 500));
         this.add(view);
-        view.setPreferredSize(new Dimension(500,500));
+        view.setPreferredSize(new Dimension(500, 500));
     }
 
     public void display() {
@@ -61,19 +69,15 @@ public class AppPanel extends JPanel implements ActionListener
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         String cmmd = e.getActionCommand();
-        Command cmmdEditCommand = appFactory.makeEditCommand(model, cmmd, null);
-        System.out.println(cmmdEditCommand);
-        cmmdEditCommand.execute();
 
         try {
             switch (cmmd) {
 
                 case "Save": {
                     if (fName == null) {
-                        fName = Utilities.getFileName((String) null, false);
+                        fName = Utilities.getFileName(null, false);
                     }
                     ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(fName));
                     os.writeObject(this.model);
@@ -82,7 +86,7 @@ public class AppPanel extends JPanel implements ActionListener
                 }
 
                 case "Save As": {
-                    String fName = Utilities.getFileName((String) null, false);
+                    String fName = Utilities.getFileName(null, false);
                     ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(fName));
                     os.writeObject(this.model);
                     os.close();
@@ -91,9 +95,9 @@ public class AppPanel extends JPanel implements ActionListener
 
                 case "Open": {
                     if (Utilities.confirm("Are you sure? Unsaved changes will be lost!")) {
-                        String fName = Utilities.getFileName((String) null, false);
+                        String fName = Utilities.getFileName(null, false);
                         ObjectInputStream is = new ObjectInputStream(new FileInputStream(fName));
-                        fName = fName;
+                        this.fName = fName;
                         model = (Model) is.readObject();
                         model.initSupport();
                         view.setModel(model);
@@ -120,7 +124,7 @@ public class AppPanel extends JPanel implements ActionListener
                 }
 
                 case "About": {
-                    Utilities.inform("Nathan Duong Turtle Graphics, 2023. All rights reserved.");
+                    Utilities.inform(appFactory.about());
                     break;
                 }
 
@@ -132,7 +136,8 @@ public class AppPanel extends JPanel implements ActionListener
                 }
 
                 default: {
-                    throw new Exception("Unrecognized command: " + cmmd);
+                    Command cmmdEditCommand = appFactory.makeEditCommand(model, cmmd, null);
+                    cmmdEditCommand.execute();
                 }
             }
 
@@ -142,3 +147,5 @@ public class AppPanel extends JPanel implements ActionListener
     }
 
 }
+
+
