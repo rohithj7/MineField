@@ -31,6 +31,7 @@ public abstract class AppPanel extends JPanel implements ActionListener, Propert
     protected controlPanel controlPanel;
     private View view;
     private String fName;
+    
     protected Model model;
 
     public AppPanel(AppFactory appFactory) {
@@ -57,7 +58,7 @@ public abstract class AppPanel extends JPanel implements ActionListener, Propert
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {}
-
+    
     protected class controlPanel extends JPanel {
 
         public controlPanel() {
