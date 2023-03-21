@@ -1,7 +1,4 @@
-package MineField;
-import mvc.*;
-public class MineFieldFactory implements AppFactory{
-    public Model makeModel() {
+   public Model makeModel() {
         int dim = 20;
         int numMines = 10;
         return new MineField(dim, numMines);
@@ -38,6 +35,7 @@ public class MineFieldFactory implements AppFactory{
             ((MoveCommand) cmd).setMove(1, 0);
         } else if (type.equals("SE")) {
             cmd = new MoveCommand((MineField) model);
+
             ((MoveCommand) cmd).setMove(1, 1);
         }
         return cmd;
