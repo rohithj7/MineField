@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -47,6 +48,9 @@ public class AppPanel extends JPanel implements ActionListener {
         frame.setTitle(appFactory.getTitle());
         frame.setSize(1000, 500);
         frame.setVisible(true);
+    }
+
+    public void propertyChange(PropertyChangeEvent evt) {
     }
 
     protected class controlPanel extends JPanel {
