@@ -12,9 +12,10 @@ import java.beans.PropertyChangeListener;
 /*
     3/20/23: Nathan Duong
         Properly formatted all direction buttons into controlPanel.
+        Removed actionPerformed (redundant).
  */
 
-public class MineFieldPanel extends AppPanel implements PropertyChangeListener {
+public class MineFieldPanel extends AppPanel {
     private final JButton nw;
     private final JButton n;
     private final JButton ne;
@@ -27,7 +28,6 @@ public class MineFieldPanel extends AppPanel implements PropertyChangeListener {
     public MineFieldPanel(AppFactory factory) {
         super(factory);
         MineField field = (MineField) model;
-        field.addPropertyChangeListener(this);
         controlPanel.setLayout(new GridLayout(4, 2));
         JPanel nowe = new JPanel();
         nw = new JButton("NW");
@@ -75,44 +75,6 @@ public class MineFieldPanel extends AppPanel implements PropertyChangeListener {
         AppFactory factory = new MineFieldFactory();
         AppPanel panel = new MineFieldPanel(factory);
         panel.display();
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        super.actionPerformed(e);
-        MineField field = (MineField) model;
-        if (e.getSource() == nw) {
-            field.setDirection(MineField.Direction.NW);
-        }
-        if (e.getSource() == n) {
-            field.setDirection(MineField.Direction.N);
-        }
-        if (e.getSource() == ne) {
-            field.setDirection(MineField.Direction.NE);
-        }
-        if (e.getSource() == w) {
-            field.setDirection(MineField.Direction.W);
-        }
-        if (e.getSource() == e) {
-            field.setDirection(MineField.Direction.E);
-        }
-        if (e.getSource() == sw) {
-            field.setDirection(MineField.Direction.SW);
-        }
-        if (e.getSource() == s) {
-            field.setDirection(MineField.Direction.S);
-        }
-        if (e.getSource() == se) {
-            field.setDirection(MineField.Direction.SE);
-        }
-    }
-
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        super.propertyChange(evt);
-        if (evt.getPropertyName().equals("mineField")) {
-            controlPanel.repaint();
-        }
     }
 
 

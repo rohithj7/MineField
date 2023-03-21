@@ -9,6 +9,7 @@ import mvc.View;
 /*
     3/20/23: Nathan Duong
         Adjusted number of mines to be 5% of the board.
+        Adjusted create direction Commands from Heading enums.
  */
 
 public class MineFieldFactory implements AppFactory {
@@ -31,28 +32,28 @@ public class MineFieldFactory implements AppFactory {
     public Command makeEditCommand(Model model, String type, Object o) {
         Command cmd = null;
         if (type.equals("NW")) {
-            cmd = new MoveCommand(model);
+            cmd = new MoveCommand((MineField) model, Heading.NW);
             ((MoveCommand) cmd).setMove(-1, -1);
         } else if (type.equals("N")) {
-            cmd = new MoveCommand(model);
+            cmd = new MoveCommand((MineField) model, Heading.N);
             ((MoveCommand) cmd).setMove(-1, 0);
         } else if (type.equals("NE")) {
-            cmd = new MoveCommand(model);
+            cmd = new MoveCommand((MineField) model, Heading.NE);
             ((MoveCommand) cmd).setMove(-1, 1);
         } else if (type.equals("W")) {
-            cmd = new MoveCommand(model);
+            cmd = new MoveCommand((MineField) model, Heading.W);
             ((MoveCommand) cmd).setMove(0, -1);
         } else if (type.equals("E")) {
-            cmd = new MoveCommand(model);
+            cmd = new MoveCommand((MineField) model, Heading.E);
             ((MoveCommand) cmd).setMove(0, 1);
         } else if (type.equals("SW")) {
-            cmd = new MoveCommand(model);
+            cmd = new MoveCommand((MineField) model, Heading.SW);
             ((MoveCommand) cmd).setMove(1, -1);
         } else if (type.equals("S")) {
-            cmd = new MoveCommand(model);
+            cmd = new MoveCommand((MineField) model, Heading.S);
             ((MoveCommand) cmd).setMove(1, 0);
         } else if (type.equals("SE")) {
-            cmd = new MoveCommand(model);
+            cmd = new MoveCommand((MineField) model, Heading.SE);
             ((MoveCommand) cmd).setMove(1, 1);
         }
         return cmd;
