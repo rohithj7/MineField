@@ -45,9 +45,9 @@ public class MineFieldFactory implements AppFactory{
         return "Mine Field Simulator";
     }
     public String[] getHelp() {
-        return new String[] {""};
+        return new String[] {"Click in a direction to move towards it"};
     }
     public String about() {
-        return "MineField Simulator version 1.0 Copyright 2023 by ";
+        return "MineField Simulator version 1.0 Copyright 2023 by Team 1";
     }
 }
