@@ -1,32 +1,39 @@
 package mvc;
 
 import javax.swing.*;
+import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-/* 3/11/2023: Nathan Duong
+/**
+ * Nathan Duong
+ * 3/14/2023
+ * Removed initSupport() from setModel(), moved to AppPanel
+ *
+ *
  */
 
 public class View extends JPanel implements PropertyChangeListener {
 
-    private Model model;
+    protected Model model;
 
     public View(Model m) {
         model = m;
         model.addPropertyChangeListener(this);
+        setBackground(Color.LIGHT_GRAY);
     }
 
     public void setModel(Model newModel) {
         model.removePropertyChangeListener(this);
         model = newModel;
+        this.model.initSupport();
         model.addPropertyChangeListener(this);
-        model.initSupport();
-        repaint();
+        //repaint();
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-
+        repaint();
     }
 
 
