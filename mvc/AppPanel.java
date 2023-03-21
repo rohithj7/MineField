@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -22,14 +24,15 @@ import java.io.ObjectOutputStream;
  *
  */
 
-public class AppPanel extends JPanel implements ActionListener
+public abstract class AppPanel extends JPanel implements ActionListener, PropertyChangeListener
 
 {
     private AppFactory appFactory;
     protected controlPanel controlPanel;
     private View view;
     private String fName;
-    private Model model;
+    
+    protected Model model;
 
     public AppPanel(AppFactory appFactory) {
         this.appFactory = appFactory;
@@ -53,6 +56,9 @@ public class AppPanel extends JPanel implements ActionListener
         frame.setVisible(true);
     }
 
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {}
+    
     protected class controlPanel extends JPanel {
 
         public controlPanel() {
@@ -141,8 +147,11 @@ public class AppPanel extends JPanel implements ActionListener
                 }
 
                 default: {
-                    Command cmmdEditCommand = appFactory.makeEditCommand(model, cmmd, null);
-                    cmmdEditCommand.execute();
+                    for (String s: appFactory.getEditCommands()) {
+                        if(cmmd == s) {
+                            appFactory.makeEditCommand(model, cmmd, null).execute();
+                        }
+                    }
                 }
             }
 
