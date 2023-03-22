@@ -23,7 +23,9 @@ import java.io.ObjectOutputStream;
  * 3/14/2023
  * Updated to accommodate for specific edit commands from AppFactory, Removed old turtle graphics cases
  *
- *
+ * Rohith, Nathan
+ * 3/21/2023
+ * Fixed save, save as, open
  */
 
 public abstract class AppPanel extends JPanel implements ActionListener, PropertyChangeListener
@@ -88,6 +90,7 @@ public abstract class AppPanel extends JPanel implements ActionListener, Propert
             switch (cmmd) {
 
                 case "Save": {
+                    model.setUnsavedChanges(false);
                     Utilities.save(model, false);
                     break;
                 }
@@ -109,6 +112,8 @@ public abstract class AppPanel extends JPanel implements ActionListener, Propert
                         fName = null;
                         model = appFactory.makeModel();
                         view.setModel(model);
+                        model.setUnsavedChanges(false);
+
                     }
                     break;
                 }
@@ -146,5 +151,3 @@ public abstract class AppPanel extends JPanel implements ActionListener, Propert
     }
 
 }
-
-

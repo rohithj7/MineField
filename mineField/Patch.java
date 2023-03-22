@@ -1,5 +1,7 @@
 package mineField;
 
+import java.io.Serializable;
+
 public class Patch implements Serializable{
     private int row;
     private int col;

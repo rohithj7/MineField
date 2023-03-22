@@ -10,7 +10,8 @@ import java.beans.PropertyChangeListener;
  * 3/14/2023
  * Removed initSupport() from setModel(), moved to AppPanel
  *
- *
+ * Rohith Iyengar
+ * 3/21
  */
 
 public class View extends JPanel implements PropertyChangeListener {
@@ -28,7 +29,7 @@ public class View extends JPanel implements PropertyChangeListener {
         model = newModel;
         this.model.initSupport();
         model.addPropertyChangeListener(this);
-        //repaint();
+        model.changed();
     }
 
     @Override
