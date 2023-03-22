@@ -5,86 +5,80 @@ import mvc.*;
 import java.beans.PropertyChangeEvent;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeListener;
+
+/*
+    3/20/23: Nathan Duong
+        Properly formatted all direction buttons into controlPanel.
+        Removed actionPerformed (redundant).
+
+    03/21/23: David Song
+        Reformatting adding the buttons. create new JPanel --> add button to JPanel
+        --> add JPanel to controlPanel
+ */
+
 public class MineFieldPanel extends AppPanel {
-    private JButton nw;
-    private JButton n;
-    private JButton ne;
-    private JButton w;
-    private JButton e;
-    private JButton sw;
-    private JButton s;
-    private JButton se;
-    public MineFieldPanel(AppFactory factory){
+    private final JButton nw;
+    private final JButton n;
+    private final JButton ne;
+    private final JButton w;
+    private final JButton e;
+    private final JButton sw;
+    private final JButton s;
+    private final JButton se;
+
+    public MineFieldPanel(AppFactory factory) {
         super(factory);
-        MineField field = (MineField)model;
-        field.addPropertyChangeListener(this);
-        controlPanel.setLayout(new GridLayout(4,2));
+        MineField field = (MineField) model;
+        controlPanel.setLayout(new GridLayout(4, 2));
+
+        JPanel nowe = new JPanel();
         nw = new JButton("NW");
         nw.addActionListener(this);
-        controlPanel.add(nw);
+        nowe.add(nw);
+        controlPanel.add(nowe);
+
+        JPanel no = new JPanel();
         n = new JButton("N");
         n.addActionListener(this);
-        controlPanel.add(n);
+        no.add(n);
+        controlPanel.add(no);
+
+        JPanel noea = new JPanel();
         ne = new JButton("NE");
         ne.addActionListener(this);
-        controlPanel.add(ne);
+        noea.add(ne);
+        controlPanel.add(noea);
+
+        JPanel we = new JPanel();
         w = new JButton("W");
         w.addActionListener(this);
-        controlPanel.add(w);
+        we.add(w);
+        controlPanel.add(we);
+
+        JPanel ea = new JPanel();
         e = new JButton("E");
         e.addActionListener(this);
-        controlPanel.add(e);
+        ea.add(e);
+        controlPanel.add(ea);
+
+        JPanel sowe = new JPanel();
         sw = new JButton("SW");
         sw.addActionListener(this);
-        controlPanel.add(sw);
+        sowe.add(sw);
+        controlPanel.add(sowe);
+
+        JPanel so = new JPanel();
         s = new JButton("S");
         s.addActionListener(this);
-        controlPanel.add(s);
+        so.add(s);
+        controlPanel.add(so);
+
+        JPanel soea = new JPanel();
         se = new JButton("SE");
         se.addActionListener(this);
-        controlPanel.add(se);
-
-        //MineFieldView view = new MineFieldView((MineField) model);
+        soea.add(se);
+        controlPanel.add(soea);
     }
-    /*
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        super.actionPerformed(e);
-        MineField field = (MineField)model;
-        if (e.getSource() == nw) {
-            field.setDirection(Direction.NW);
-        }
-        if (e.getSource() == n) {
-            field.setDirection(Direction.N);
-        }
-        if (e.getSource() == ne) {
-            field.setDirection(Direction.NE);
-        }
-        if (e.getSource() == w) {
-            field.setDirection(Direction.W);
-        }
-        if (e.getSource() == e) {
-            field.setDirection(Direction.E);
-        }
-        if (e.getSource() == sw) {
-            field.setDirection(Direction.SW);
-        }
-        if (e.getSource() == s) {
-            field.setDirection(Direction.S);
-        }
-        if (e.getSource() == se) {
-            field.setDirection(Direction.SE);
-        }
-    }
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        super.propertyChange(evt);
-        repaint();
-        /*
-        if (evt.getPropertyName().equals("mineField")) {
-            repaint();
-        }
-    } */
 
     public static void main(String[] args) {
         AppFactory factory = new MineFieldFactory();
