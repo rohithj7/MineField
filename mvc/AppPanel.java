@@ -1,5 +1,7 @@
 package mvc;
 
+import mineField.MineFieldFactory;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -31,7 +33,6 @@ public abstract class AppPanel extends JPanel implements ActionListener, Propert
     protected controlPanel controlPanel;
     private View view;
     private String fName;
-    
     protected Model model;
 
     public AppPanel(AppFactory appFactory) {
@@ -58,7 +59,7 @@ public abstract class AppPanel extends JPanel implements ActionListener, Propert
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {}
-    
+
     protected class controlPanel extends JPanel {
 
         public controlPanel() {
@@ -87,34 +88,18 @@ public abstract class AppPanel extends JPanel implements ActionListener, Propert
             switch (cmmd) {
 
                 case "Save": {
-                    if (fName == null) {
-                        fName = Utilities.getFileName((String) null, false);
-                    }
-                    ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(fName));
-                    os.writeObject(this.model);
-                    os.close();
+                    Utilities.save(model, false);
                     break;
                 }
 
                 case "Save As": {
-                    String fName = Utilities.getFileName((String) null, false);
-                    ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(fName));
-                    os.writeObject(this.model);
-                    os.close();
+                    Utilities.save(model, true);
                     break;
                 }
 
                 case "Open": {
-                    if (Utilities.confirm("Are you sure? Unsaved changes will be lost!")) {
-                        String fName = Utilities.getFileName((String) null, false);
-                        ObjectInputStream is = new ObjectInputStream(new FileInputStream(fName));
-                        this.fName = fName;
-                        model = (Model) is.readObject();
-                        model.initSupport();
-                        view.setModel(model);
-                        is.close();
-                    }
-
+                    model = Utilities.open(model);
+                    view.setModel(model);
                     break;
 
                 }
