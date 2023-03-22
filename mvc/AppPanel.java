@@ -101,6 +101,7 @@ public abstract class AppPanel extends JPanel implements ActionListener, Propert
                 }
 
                 case "Open": {
+                    model.setUnsavedChanges(false);
                     model = Utilities.open(model);
                     view.setModel(model);
                     break;
@@ -113,7 +114,6 @@ public abstract class AppPanel extends JPanel implements ActionListener, Propert
                         model = appFactory.makeModel();
                         view.setModel(model);
                         model.setUnsavedChanges(false);
-
                     }
                     break;
                 }
