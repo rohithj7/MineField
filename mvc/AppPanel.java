@@ -1,9 +1,13 @@
 package mvc;
 
+import mineField.MineFieldFactory;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -22,14 +26,14 @@ import java.io.ObjectOutputStream;
  *
  */
 
-public class AppPanel extends JPanel implements ActionListener
+public abstract class AppPanel extends JPanel implements ActionListener, PropertyChangeListener
 
 {
     private AppFactory appFactory;
     protected controlPanel controlPanel;
     private View view;
     private String fName;
-    private Model model;
+    protected Model model;
 
     public AppPanel(AppFactory appFactory) {
         this.appFactory = appFactory;
@@ -52,6 +56,9 @@ public class AppPanel extends JPanel implements ActionListener
         frame.setSize(1000, 500);
         frame.setVisible(true);
     }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {}
 
     protected class controlPanel extends JPanel {
 
@@ -81,34 +88,18 @@ public class AppPanel extends JPanel implements ActionListener
             switch (cmmd) {
 
                 case "Save": {
-                    if (fName == null) {
-                        fName = Utilities.getFileName((String) null, false);
-                    }
-                    ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(fName));
-                    os.writeObject(this.model);
-                    os.close();
+                    Utilities.save(model, false);
                     break;
                 }
 
                 case "Save As": {
-                    String fName = Utilities.getFileName((String) null, false);
-                    ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(fName));
-                    os.writeObject(this.model);
-                    os.close();
+                    Utilities.save(model, true);
                     break;
                 }
 
                 case "Open": {
-                    if (Utilities.confirm("Are you sure? Unsaved changes will be lost!")) {
-                        String fName = Utilities.getFileName((String) null, false);
-                        ObjectInputStream is = new ObjectInputStream(new FileInputStream(fName));
-                        this.fName = fName;
-                        model = (Model) is.readObject();
-                        model.initSupport();
-                        view.setModel(model);
-                        is.close();
-                    }
-
+                    model = Utilities.open(model);
+                    view.setModel(model);
                     break;
 
                 }
@@ -141,8 +132,11 @@ public class AppPanel extends JPanel implements ActionListener
                 }
 
                 default: {
-                    Command cmmdEditCommand = appFactory.makeEditCommand(model, cmmd, null);
-                    cmmdEditCommand.execute();
+                    for (String s: appFactory.getEditCommands()) {
+                        if(cmmd == s) {
+                            appFactory.makeEditCommand(model, cmmd, null).execute();
+                        }
+                    }
                 }
             }
 
