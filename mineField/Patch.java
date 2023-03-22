@@ -1,6 +1,6 @@
 package mineField;
 
-public class Patch {
+public class Patch implements Serializable{
     private int row;
     private int col;
     public boolean occupied;
